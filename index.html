@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="ocr-select-angular-app">
+<head>
+	<title>OCR Select</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="css/ocr-select.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+<body ng-controller="OcrSelectCtrl as ocrSelect">
+	<div id="grid-container" class="row">
+		<form>
+			<input ng-model="imgInput" id="img-input" type="file" name="pic" accept="image/*, application/pdf">
+			<select ng-model="selectedLang" name="language" id="language">
+				<option ng-repeat="item in items" value="{{ocrSelect.item}}">{{ocrSelect.item}}</option>
+			</select>
+		</form>
+		<div id="image-section">
+			<form id="pdf-controls">
+				<button ng-click="prev" id="btn-prev">Prev</button>
+				<button ng-click="next" id="btn-next">Next</button>
+			</form>
+			<div id="image-area" class="drop-zone">
+				<canvas ng-model="imgUpload" id="uploaded-img"></canvas>
+
+				<div ng-model="boxSelect" id="box-select"></div>
+			</div>			
+		</div>
+		<div id="results-area">
+			<canvas id="test-area"></canvas>
+			<div id="results">
+				<div ng-model="progress" id="progress"></div>
+				<div ng-model="displayResults" id="display"></div>				
+			</div>
+		</div>
+	</div>
+
+
+	<!-- scripts here -->
+
+	<script src="angular.min.js"></script>
+	<script src="angular-route.min.js"></script>
+	<script src="angular-resource.min.js"></script>
+	<!-- pdf to image converter from pdf.js -->
+	<script type="text/javascript" src="external/pdf.js"></script>	
+	<!-- OCR API provided by tesseract.js:
+		http://tesseract.projectnaptha.com/#docs
+		https://github.com/naptha/tesseract.js -->
+	<script type="text/javascript" src="http://tenso.rs/tesseract.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="allControllers.js"></script>
+</body>
+</html>
