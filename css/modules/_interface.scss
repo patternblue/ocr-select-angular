@@ -1,0 +1,59 @@
+/*interface*/
+
+/*header*/
+@mixin header-fixed{
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	& + *{
+		margin-top: $height-md;
+	}
+}
+
+/*Dropdown menu (e.g. on a nav button)*/
+@mixin dropdown-menu{
+	/*ul{*/
+		/*initial li*/
+		li{
+			position: relative;
+			display: inline-block; 
+
+			/*secondary ul*/
+			ul{
+				display: none;
+				background: inherit;
+			}
+			ul:hover,
+			&:hover{
+				cursor: pointer;
+				/*secondary ul visibility change*/
+				ul {
+					display: block;
+					position: absolute;
+					/*background: inherit;*/
+					width: 200px;
+					left: 0;
+					/*top: 0;*/
+
+					/*secondary li*/
+					li {
+						display: block;
+						/*width: 100%;*/
+			            &:hover {
+        					background-color: darken(#999, 20%);
+						}
+					}
+				}
+			}
+		}
+	/*}*/
+}
+
+@mixin footer-bottom{
+	clear: both;
+    position: relative;
+    z-index: 10;
+    /*height: $footerHeight;*/
+    /*margin-top: -$footerHeight;*/
+}

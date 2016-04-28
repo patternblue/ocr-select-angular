@@ -1,0 +1,25 @@
+/*Grid*/
+
+/*The parent row/container*/
+@mixin row(){
+	@include clearfix;
+}
+
+/*mixin for each column of grid*/
+@mixin col($i, $cols, $gutterPercent) {
+	width: ((100% - ($gutterPercent * ($cols - 1))) * ($i / $cols)) + ($gutterPercent * ($i - 1));
+	
+	/*margin-right: $gutterPercent;*/
+	&:nth-child(n) {
+		margin-right: $gutterPercent;
+	}
+
+	float: left;
+	&:last-child {
+		margin-right: 0;
+	}
+}
+
+.row{
+	@include row;
+}

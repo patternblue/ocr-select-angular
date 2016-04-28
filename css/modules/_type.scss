@@ -1,0 +1,49 @@
+/*type*/
+
+@mixin h1{
+	font-size: 		$font-size-lg;
+	font-family: 	$font-family-base;
+	font-weight: 	$weight-bold;
+	letter-spacing: $letter-spacing-lg;
+}
+
+@mixin a-hover($color){
+    &:hover{
+		cursor: pointer; 
+		color: darken($color, 10%);
+		transition: background-color 0.2s ease;
+    }
+}
+
+/*presets*/
+
+strong{
+	font-weight: $weight-bold;
+}
+a {
+    text-decoration: none;
+    letter-spacing: $letter-spacing-sm;
+}
+h1{
+	@include h1;
+	margin-bottom: 	$margin-lg;
+	padding-bottom: $padding-sm;
+	color: $color-h1;
+}
+h2{
+	@extend h1;
+	font-size: 		$font-size-md;
+	margin-bottom: $margin-md;
+}
+h3{
+	@extend h2;
+	font-size: 		$font-size-sm;	
+	margin-bottom: $margin-sm;
+}
+p {
+	font-size: $font-size-sm;
+	font-family: $font-family-fixed;
+	color: 		$color-text;
+	line-height: $line-height-sm;
+	margin-bottom: $margin-md;
+}

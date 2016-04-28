@@ -1,16 +1,47 @@
 (function(){
 	'use strict';
 	angular
-		.module('allControllers', [])
-		.controller('OcrSelectCtrl', OcrSelectCtrl);
-
+		.module('ocrSelectAngularApp')
+		// .controller('OcrSelectCtrl', OcrSelectCtrl);
+		.controller('OcrSelectCtrl', function(){
+			var vm = this;
+			console.log(vm);
+			// console.log($scope);
+			vm.lang = 'eng';
+			vm.items = ['dan', 'deu', 'eng', 'spa', 'fra', 'hin', 'ita', 'jpn', 'kor', 'lit', 'meme', 'por', 'rus', 'swe', 'tur'];
+			vm.removeBox = function(){
+				console.log('removeBox ran');
+			}
+			vm.getInputImgPDF = function(){
+				console.log('getInputImgPDF ran');
+			}
+			vm.uploadFile = function(event){
+				console.log('uploadFile ran');
+				var files = event.target.files;
+				vm.removeBox();
+				vm.getInputImgPDF();
+			};
+		});
 	// manually inject dependencies
-	OcrSelectCtrl.$inject = ['$http'];
+	// OcrSelectCtrl.$inject = ['$scope'];
 
-	function OcrSelectCtrl($http){
-		var vm = this;
-		
-		vm.lang = 'eng';
-		vm.items = ['dan', 'deu', 'eng', 'spa', 'fra', 'hin', 'ita', 'jpn', 'kor', 'lit', 'meme', 'por', 'rus', 'swe', 'tur'];
-	}
+	// function OcrSelectCtrl(){
+	// 	var vm = this;
+	// 	console.log(vm);
+	// 	// console.log($scope);
+	// 	vm.lang = 'eng';
+	// 	vm.items = ['dan', 'deu', 'eng', 'spa', 'fra', 'hin', 'ita', 'jpn', 'kor', 'lit', 'meme', 'por', 'rus', 'swe', 'tur'];
+	// 	vm.removeBox = function(){
+	// 		console.log('removeBox ran');
+	// 	}
+	// 	vm.getInputImgPDF = function(){
+	// 		console.log('getInputImgPDF ran');
+	// 	}
+	// 	vm.uploadFile = function(event){
+	// 		var files = event.target.files;
+	// 		vm.removeBox();
+	// 		vm.getInputImgPDF();
+	// 	};
+	// }
+
 })();

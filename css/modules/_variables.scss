@@ -1,0 +1,79 @@
+/*variables*/
+
+/*color-scheme*/
+
+$color-gray-dark: 	#252525;
+$color-gray-normal: #666;
+$color-gray-light: 	#ddd;
+$color-white: 		#fff;
+$color-warning:		#d4230f;
+
+$color-base: 	#77bb9e;
+/*$color-base: 	#2d9681;*/
+/*$color-accent: 	#bb7733;*/
+/*$color-accent: #f8a34b;*/
+$color-accent: #a5726a;
+
+/*grid*/
+
+$span1: 1;
+$span2: 2;
+$span3: 3;
+$span4: 4;
+$span5: 5;
+$span6: 6;
+$span7: 7;
+$span8: 8;
+$span9: 9;
+$span10: 10;
+$span11: 11;
+$span12: 12;
+$cols: 12;
+$gutterPercent: 7%;
+
+/*responses*/
+$break-sm-md: 720px;
+$break-md-lg: 1120px;
+
+$container-width-sm: 480px;
+$container-width-md: 720px;
+$container-width-lg: 1120px;
+
+/*sizes*/
+
+$border-size-sm: 1px;
+$border-size-md: 4px;
+$border-size-lg: 8px;
+
+$height-sm: 50px;
+$height-md: 100px;
+$height-lg: 400px;
+
+$margin-sm: 10px;
+$margin-md: 25px;
+$margin-lg: 75px;
+
+$padding-sm: 10px;
+$padding-md: 25px;
+$padding-lg: 75px;
+
+/*type*/
+
+$font-size-sm: 14px;
+$font-size-md: 18px;
+$font-size-lg: 36px;
+
+$weight-light:		100;
+$weight-regular:	400;
+$weight-bold:		600;
+
+$letter-spacing-sm: 1px;
+$letter-spacing-md: 2px;
+$letter-spacing-lg: 3px;
+
+$font-family-base: 	helvetica;
+$font-family-fixed: monospace;
+
+$line-height-sm: 20px;
+$line-height-md: 30px;
+$line-height-lg: 50px;

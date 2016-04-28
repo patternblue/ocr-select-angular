@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html ng-app="ocr-select-angular-app">
+<html ng-app="ocrSelectAngularApp">
 <head>
 	<title>OCR Select</title>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="css/ocr-select.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
-<body ng-controller="OcrSelectCtrl as ocrSelect">
+<body ng-controller="OcrSelectCtrl as ocrselect">
 	<div id="grid-container" class="row">
 		<form>
-			<input ng-model="imgInput" id="img-input" type="file" name="pic" accept="image/*, application/pdf">
+			<input custom-on-change="ocrselect.uploadFile" id="img-input" type="file" name="pic" accept="image/*, application/pdf">
 			<select ng-model="selectedLang" name="language" id="language">
-				<option ng-repeat="item in items" value="{{ocrSelect.item}}">{{ocrSelect.item}}</option>
+				<option ng-repeat="item in ocrselect.items" value="{{item}}">{{item}}</option>
 			</select>
+
+<!-- 			<div ngf-drop="uploadFiles($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'">
+				Drop Images or PDFs files here
+			</div> -->
+
+
 		</form>
 		<div id="image-section">
 			<form id="pdf-controls">
@@ -37,16 +43,28 @@
 
 	<!-- scripts here -->
 
+	<!-- Angular -->
 	<script src="angular.min.js"></script>
 	<script src="angular-route.min.js"></script>
 	<script src="angular-resource.min.js"></script>
+	<!-- <script src="angular.js"></script>
+	<script src="angular-route.js"></script>
+	<script src="angular-resource.js"></script> -->
+
+	<!-- ng-file-upload
+	https://github.com/danialfarid/ng-file-upload -->
+<!-- 	<script src="ng-file-upload-shim(.min).js"></script> for no html5 browsers support
+	<script src="ng-file-upload(.min).js"></script> -->
+
 	<!-- pdf to image converter from pdf.js -->
 	<script type="text/javascript" src="external/pdf.js"></script>	
+
 	<!-- OCR API provided by tesseract.js:
 		http://tesseract.projectnaptha.com/#docs
 		https://github.com/naptha/tesseract.js -->
 	<script type="text/javascript" src="http://tenso.rs/tesseract.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 	<script type="text/javascript" src="allControllers.js"></script>
+	<script type="text/javascript" src="allFactories.js"></script>
 </body>
 </html>

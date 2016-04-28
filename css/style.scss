@@ -1,0 +1,47 @@
+
+@import 'modules/base';
+@import 'vendors/base';
+
+.drop-zone{
+	border: 2px dashed #ccc;
+	@include hover-border;
+}
+
+#image-section{
+	@include col($span6, $cols, 0);
+
+	#pdf-controls{
+		text-align: center;
+	}
+	#image-area{
+		position: relative;
+		overflow: scroll;
+		#box-select{
+			display: none;
+			z-index: 9000;
+			pointer-events: none;
+			position: absolute !important;
+			cursor: default !important;
+
+			background-color: rgba(239, 28, 190, 0.6);
+			border: 1px solid #b20e8c;
+		}
+	}
+}
+
+.box-active{
+	display: block !important;
+}
+#results-area{
+	@include col($span6, $cols, 0);
+	#results{
+		#progress{
+			background-color: $color-accent;
+		}
+		div{
+			background-color: $color-base;
+			padding: $padding-sm;
+		}
+		
+	}
+}

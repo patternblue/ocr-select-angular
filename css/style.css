@@ -1,0 +1,175 @@
+/*variables*/
+/*color-scheme*/
+/*$color-base: 	#2d9681;*/
+/*$color-accent: 	#bb7733;*/
+/*$color-accent: #f8a34b;*/
+/*grid*/
+/*responses*/
+/*sizes*/
+/*type*/
+/*layout*/
+/*presets*/
+/*Red borders on everything*/
+* {
+  /*border: 1px dotted red !important;*/ }
+
+/*Box-sizing*/
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/* Clearfix */
+/*Responsiveness*/
+/*Vertical align center*/
+/*parent must have a given height*/
+/*hover background (change background color on hover)*/
+/*presets*/
+/*Grid*/
+/*The parent row/container*/
+/*mixin for each column of grid*/
+.row {
+  /*For modern browsers*/
+  /*For IE 6/7 (trigger hasLayout)*/ }
+  .row:before, .row:after {
+    content: "";
+    display: table; }
+  .row:after {
+    clear: both; }
+  .row {
+    zoom: 1; }
+
+/*color scheme*/
+/*presets*/
+/*interface*/
+/*header*/
+/*Dropdown menu (e.g. on a nav button)*/
+/*type*/
+/*presets*/
+strong {
+  font-weight: 600; }
+
+a {
+  text-decoration: none;
+  letter-spacing: 1px; }
+
+h1, h2, h3 {
+  font-size: 36px;
+  font-family: helvetica;
+  font-weight: 600;
+  letter-spacing: 3px;
+  margin-bottom: 75px;
+  padding-bottom: 10px;
+  color: #666; }
+
+h2, h3 {
+  font-size: 18px;
+  margin-bottom: 25px; }
+
+h3 {
+  font-size: 14px;
+  margin-bottom: 10px; }
+
+p {
+  font-size: 14px;
+  font-family: monospace;
+  color: #666;
+  line-height: 20px;
+  margin-bottom: 25px; }
+
+/* 
+  Reset
+  http://meyerweb.com/eric/tools/css/reset/ 
+  v2.0 | 20110126
+  License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1,
+h2,
+h3, h2, h3, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+.drop-zone {
+  border: 2px dashed #ccc; }
+  .drop-zone:hover {
+    border: 1px dashed #d4230f !important; }
+
+#image-section {
+  width: 50%;
+  /*margin-right: $gutterPercent;*/
+  float: left; }
+  #image-section:nth-child(n) {
+    margin-right: 0; }
+  #image-section:last-child {
+    margin-right: 0; }
+  #image-section #pdf-controls {
+    text-align: center; }
+  #image-section #image-area {
+    position: relative;
+    overflow: scroll; }
+    #image-section #image-area #box-select {
+      display: none;
+      z-index: 9000;
+      pointer-events: none;
+      position: absolute !important;
+      cursor: default !important;
+      background-color: rgba(239, 28, 190, 0.6);
+      border: 1px solid #b20e8c; }
+
+.box-active {
+  display: block !important; }
+
+#results-area {
+  width: 50%;
+  /*margin-right: $gutterPercent;*/
+  float: left; }
+  #results-area:nth-child(n) {
+    margin-right: 0; }
+  #results-area:last-child {
+    margin-right: 0; }
+  #results-area #results #progress {
+    background-color: #a5726a; }
+  #results-area #results div {
+    background-color: #77bb9e;
+    padding: 10px; }
+
+/*# sourceMappingURL=style.css.map */
