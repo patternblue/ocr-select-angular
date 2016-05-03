@@ -6,9 +6,9 @@
 
 
 	// manually inject dependencies
-	OcrSelectCtrl.$inject = ['$scope', 'imgPDF', 'boxDrawer'];
+	OcrSelectCtrl.$inject = ['$scope', '$timeout', 'imgPDF', 'boxDrawer'];
 
-	function OcrSelectCtrl($scope, imgPDF, boxDrawer){
+	function OcrSelectCtrl($scope, $timeout, imgPDF, boxDrawer){
 		var vm = this,
 			mouseIsDown = false,
 			imgPdfModel = {
@@ -62,14 +62,25 @@
 			mouseIsDown = false;
 			if(vm.isActive){
 				var box = boxDrawer.getBox();
-				imgPDF.captureOCR(imgPdfModel, box, vm.testArea, vm.progress, vm.displayResults, vm.langs);
-
-
-				console.log('ran captureBox');
+				imgPDF.captureOCR(imgPdfModel, box, vm.testArea, vm.langs, displayProgress, displayResults);
+				// $scope.$apply(function(){
+					// vm.displayResults = results;
+				// });
 				vm.removeBox();
+				// $scope.$apply();
 			}
 		}
-
+		function displayProgress(progress){
+			$timeout(function(){
+				vm.progress = progress;
+			},0);
+		}
+		function displayResults(results){
+			$timeout(function(){
+				console.log('ran displayResults');
+				vm.displayResults = results;
+			},0);
+		}
 	}
 
 })();

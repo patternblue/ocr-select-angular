@@ -66,7 +66,7 @@
 			context.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
 		}
 
-		function captureOCR(model, box, testArea, progress, results, langs){
+		function captureOCR(model, box, testArea, langs, cbProgress, cbResults){
 			var clipW = Math.max(1, Math.floor(box.w)),
 				clipH = Math.max(1, Math.floor(box.h)),
 				options = {
@@ -81,25 +81,27 @@
 					dh: clipH
 				};
 			renderIMG(options, testArea);
-
-
-			// prepare testArea canvas's drawn image for OCR API 
-			model.capturedImg.src = testArea.toDataURL("image/jpeg", 1.0);
+			console.log('rendered img');
 
 			// image must load first before running OCR!
 			model.capturedImg.onload = function(){
-				runOCR(this, Tesseract, progress, results, langs);				
+				console.log('ran capturedImg');
+				runOCR(this, Tesseract, langs, cbProgress, cbResults);				
 			}
+			// prepare testArea canvas's drawn image for OCR API 
+			model.capturedImg.src = testArea.toDataURL("image/jpeg", 1.0);
 		}
 
-		function runOCR(img, ocrAPI, progress, results, langs){
+		function runOCR(img, ocrAPI, langs, cbProgress, cbResults){
+			console.log('ran OCR');
 			ocrAPI
 				.recognize(img, {
-					progress: progress,
-					lang: langs[3]
+					progress: cbProgress,
+					lang: langs[2]
 				})
 			  	.then(function(textToDisplay){
-			  		results = textToDisplay.text;
+			  		// console.log(textToDisplay);
+			  		cbResults(textToDisplay.text);
 			  		img.onload = null;
 			  	});
 		}
@@ -157,7 +159,6 @@
 		function getMousePos(event, $canvas){
 			var x = event.pageX - $canvas.parent().offset().left + $canvas.parent().scrollLeft(),
 				y = event.pageY - $canvas.parent().offset().top + $canvas.parent().scrollTop();
-			console.log(x);
 			return [x, y];
 		};
 
