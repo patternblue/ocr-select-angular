@@ -8,27 +8,18 @@
 <body ng-controller="OcrSelectCtrl as ocrselect">
 	<div id="grid-container" class="row">
 		<form>
-			<input custom-on-change="ocrselect.uploadFile" id="img-input" type="file" name="pic" accept="image/*, application/pdf">
-			<select ng-model="selectedLang" name="language" id="language">
-				<option ng-repeat="lang in ocrselect.langs" value="{{lang}}">{{lang}}</option>
+			<input on-file-change="ocrselect.fileChangeHandler" id="img-input" type="file" name="pic" accept="image/*, application/pdf">
+
+			<select ng-model="ocrselect.langs.selectedLang" name="language" id="language" ng-options="lang as lang for lang in ocrselect.langs.list">
 			</select>
-
-<!-- 			<div ngf-drop="uploadFiles($files)" class="drop-box" ngf-drag-over-class="'dragover'" ngf-pattern="'image/*,application/pdf'">
-				Drop Images or PDFs files here
-			</div> -->
-
-
 		</form>
 		<div id="image-section">
 			<form id="pdf-controls">
-				<button ng-click="prev" id="btn-prev">Prev</button>
-				<button ng-click="next" id="btn-next">Next</button>
+				<select ng-class="ocrselect.dropZone" ng-model="ocrselect.pdf.currentPage" name="pageSelect" id="pageSelect" ng-options="page as page for page in ocrselect.pdf.pageList" ng-change="ocrselect.onPageSelect(ocrselect.pdf.currentPage)">
+				</select>
 			</form>
-			<!-- {{vm.boxSelect}} -->
-			<div id="image-area" class="drop-zone">
+			<div id="image-area" class="drop-zone" on-drag-over="ocrselect.dragOverHandler" on-drag-end="ocrselect.dragEndHandler" on-drop="ocrselect.dropHandler">
 				<canvas ng-model="imgUpload" ng-mousedown="ocrselect.initBox($event)" ng-mousemove="ocrselect.drawBox($event)" ng-mouseup="ocrselect.captureBox($event)" id="uploaded-img"></canvas>
-				<!-- <canvas id="uploaded-img"></canvas> -->
-				<!-- <img ng-src="{{ocrselect.img.src}}" id="test-img" alt="uploaded image"> -->
 				<div ng-class="ocrselect.isActive" ng-style="ocrselect.boxSelect" id="box-select"></div>
 			</div>			
 		</div>
@@ -54,11 +45,6 @@
 	<!-- <script src="angular.js"></script>
 	<script src="angular-route.js"></script>
 	<script src="angular-resource.js"></script> -->
-
-	<!-- ng-file-upload: https://github.com/danialfarid/ng-file-upload -->
-	<!-- <script src="ng-file-upload-shim(.min).js"></script> -->
-	<!-- for no html5 browsers support -->
-	<!-- <script src="ng-file-upload(.min).js"></script> -->
 
 	<!-- pdf to image converter from pdf.js -->
 	<script type="text/javascript" src="external/pdf.js"></script>	

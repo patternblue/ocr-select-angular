@@ -3,168 +3,155 @@
 
 	angular
 		.module('ocrSelectAngularApp')
+		.factory('PDFJS', pdfApiService)
+		.factory('Tesseract', ocrService)
 		.factory('imgPDF', imgPDF)
 		.factory('boxDrawer', boxDrawer);	
 
-	// imgPDF.$inject = ['$scope'];
+	pdfApiService.$inject = ['$window'];
+	ocrService.$inject = ['$window'];
 
-	
+	// pdfAPI service
+	function pdfApiService($window){
+		if(!$window.PDFJS){
+			// If not available, provide a
+			// mock service, try to load it from somewhere else,
+			// redirect the user to a dedicated error page, ...
+		}
+		return $window.PDFJS;
+	}
 
+	// ocrAPI service
+	function ocrService($window){
+		if(!$window.Tesseract){
+			// If not available, provide a
+			// mock service, try to load it from somewhere else,
+			// redirect the user to a dedicated error page, ...
+		}
+		return $window.Tesseract;		
+	}
+
+	// imgPDF service
 	function imgPDF(){
-		function upload(file, model, view){
+		var _img = new Image(),
+			_pdf = {
+				src: '',
+				isPDF: false
+			},
+			_capturedImg = new Image(),
+			_renderOptions = [];
+
+		function updateSrc(anObject, yourURL){
+			URL.revokeObjectURL(anObject.src);
+			anObject.src = yourURL;
+		}
+		function getRenderOptions(){
+			return _renderOptions;
+		}
+		function getImgSrc(){
+			return _img.src;
+		}
+		function getPdfSrc(){
+			return _pdf.src;
+		}
+		function updateImg(tmpURL){
+			updateSrc(_img, tmpURL);
+		}
+		function updatePdf(tmpURL){
+			updateSrc(_pdf, tmpURL);
+		}
+		function updateCapturedImg(tmpURL){
+			updateSrc(_capturedImg, tmpURL);	
+		}
+		function checkImgOrPdf(file, cbIfImg, cbIfPdf){
 			var fileTypesIMG = ['jpg', 'jpeg', 'png', 'gif'],
 				fileTypesPDF = ['pdf'],
 				inputExtension = file.name.split('.').pop().toLowerCase(),
 				isPDF = fileTypesPDF.indexOf(inputExtension) > -1,
 				isIMG = fileTypesIMG.indexOf(inputExtension) > -1;
 			if (isIMG){
-				URL.revokeObjectURL(model.img.src);
-				model.img.onload = function(event){
-					var options = {
-						img: model.img,
-						sx: 0,
-						sy: 0,
-						sw: model.img.width,
-						sh: model.img.height,
-						dx: 0,
-						dy: 0,
-						dw: model.img.width,
-						dh: model.img.height
-					}
-					renderIMG(options, view);
-				}
-				updateSrc(model.img, URL.createObjectURL(file)); 	
-
+				prepImg(file, cbIfImg);	
 			}else if(isPDF){
-				URL.revokeObjectURL(model.pdf.src);
-				updateSrc(model.pdf, URL.createObjectURL(file));
-
-		        model.pdf.currentPage = 1;
-		        getAndRenderPDF(PDFJS, model, view);
+				prepPdf(file, cbIfPdf);
 			}else{
 				return undefined;
 				console.log('error! invalid file type');
 			}
 		}
-		function updateSrc(imgOrPdf, yourURL){
-			imgOrPdf.src = yourURL;
-		}
-		function renderIMG(options, canvas){
-			var context = canvas.getContext('2d');
-			var img = options.img,
-				sx = options.sx,
-				sy = options.sy,
-				sw = options.sw,
-				sh = options.sh,
-				dx = options.dx,
-				dy = options.dy,
-				dw = options.dw,
-				dh = options.dh;
-			context.clearRect(dx, dy, dw, dh);
-			canvas.width = dw;
-			canvas.height = dh;
-			context.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+		function prepImg(file, cbIfImg){
+			_img.onload = function(event){
+				_renderOptions = [
+					_img,
+					0,
+					0,
+					_img.width,
+					_img.height,
+					0,
+					0,
+					_img.width,
+					_img.height
+				];				
+				cbIfImg();
+			}
+			updateImg(URL.createObjectURL(file));
+		}		
+
+		function prepPdf(file, cbIfPdf){
+			updatePdf(URL.createObjectURL(file));
+			cbIfPdf();
 		}
 
-		function captureOCR(model, box, testArea, langs, cbProgress, cbResults){
+		function captureImg(box, cbAfterCapture){
 			var clipW = Math.max(1, Math.floor(box.w)),
-				clipH = Math.max(1, Math.floor(box.h)),
-				options = {
-					img: model.img,
-					sx: box.left,
-					sy: box.top,
-					sw: clipW,
-					sh: clipH,
-					dx: 0,
-					dy: 0,
-					dw: clipW,
-					dh: clipH
-				};
-			renderIMG(options, testArea);
-			console.log('rendered img');
-
-			// image must load first before running OCR!
-			model.capturedImg.onload = function(){
-				console.log('ran capturedImg');
-				runOCR(this, Tesseract, langs, cbProgress, cbResults);				
+				clipH = Math.max(1, Math.floor(box.h));
+			_renderOptions = [
+				_img,
+				box.left,
+				box.top,
+				clipW,
+				clipH,
+				0,
+				0,
+				clipW,
+				clipH
+			];	
+			cbAfterCapture();
+		}
+		function prepOCR(tmpURL, cbRunOCR){
+			_capturedImg.onload = function(){
+				cbRunOCR(this);				
 			}
-			// prepare testArea canvas's drawn image for OCR API 
-			model.capturedImg.src = testArea.toDataURL("image/jpeg", 1.0);
+			updateCapturedImg(tmpURL);
 		}
-
-		function runOCR(img, ocrAPI, langs, cbProgress, cbResults){
-			console.log('ran OCR');
-			ocrAPI
-				.recognize(img, {
-					progress: cbProgress,
-					lang: langs[2]
-				})
-			  	.then(function(textToDisplay){
-			  		// console.log(textToDisplay);
-			  		cbResults(textToDisplay.text);
-			  		img.onload = null;
-			  	});
-		}
-
-		function getAndRenderPDF(pdfAPI, model, view){
-			var self = this;
-			pdfAPI.getDocument(model.pdf.src).then(function(pdf){
-				model.pdf.numPages = pdf.numPages;
-
-				pdf.getPage(model.pdf.currentPage).then(function(page){
-					var scale = 1;
-					renderPDF(view, page, scale).then(function(){
-						var aDataURL = view.toDataURL("image/jpeg", 1.0);
-						updateSrc(model.img, aDataURL);
-
-						// model.img.onload = function(){
-						// 	view.$uploadedImg.on('mousedown', {arg1: model, arg2: view}, self.initBoxOnMouseDown);
-						// };
-
-						// set mousedown listener for drawbox here
-					});
-				});
-			});
-		}
-
-		function renderPDF(view, page, scale){
-			var viewport = page.getViewport(scale);
-			var context = view.getContext('2d');
-			var renderContext = {
-			  canvasContext: context,
-			  viewport: viewport
-			}
-			context.clearRect(0, 0, viewport.width, viewport.height);
-			view.width = viewport.width;
-			view.height = viewport.height;
-			return page.render(renderContext).promise;
-		}
-
+		
+		// expose imgPDF service here
 		var service = {
-			upload: upload,
-			captureOCR: captureOCR
+			getRenderOptions: getRenderOptions,
+			getImgSrc: getImgSrc,
+			getPdfSrc: getPdfSrc,
+			updateImg: updateImg,
+			updatePdf: updatePdf,
+			updateCapturedImg: updateCapturedImg,
+			checkImgOrPdf: checkImgOrPdf,
+			prepImg: prepImg,
+			prepPdf: prepPdf,
+			captureImg: captureImg,
+			prepOCR: prepOCR
 		};
 		return service;
 	}
 
+	// boxDrawer service
 	function boxDrawer(){
 		var box = {};
-		function init(event, canvas){
-			var xy = getMousePos(event, canvas);
+		function init(xy){
 			box = {
 				x: xy[0],
 				y: xy[1]
 			};
 		}
-		function getMousePos(event, $canvas){
-			var x = event.pageX - $canvas.parent().offset().left + $canvas.parent().scrollLeft(),
-				y = event.pageY - $canvas.parent().offset().top + $canvas.parent().scrollTop();
-			return [x, y];
-		};
 
-		function sizeBox(event, box, $canvas){
-
-			var xy = getMousePos(event, $canvas);
+		function getSize(box, xy){
 			box.mouseX = xy[0];
 			box.mouseY = xy[1];
 			box.w = Math.abs(box.x - xy[0]);
@@ -199,15 +186,13 @@
 		    box.top = top;
 		};
 
-
-		function draw(event, $canvas){
-			sizeBox(event, box, $canvas);
+		function draw(xy){
+			getSize(box, xy);
 			boxFlip(box);
 			var left = box.left,
 				top = box.top,
 				w = box.w,
 				h = box.h;
-
 		    return {
 		    	'left': left,
 		        'top': top,
@@ -215,18 +200,14 @@
 		        'height': h
 		    };
 		}
-		function activate(){
-		    return 'box-active';
-		};
 		function getBox(){
 			return box;
 		}
 
-
+		// expose boxDrawer service
 		var service = {
 			init: init,
 			draw: draw,
-			activate: activate,
 			getBox: getBox
 		};
 		return service;
